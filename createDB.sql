@@ -1,0 +1,78 @@
+CREATE DATABASE openCTF;
+USE openCTF;
+
+CREATE TABLE Utente (
+	username VARCHAR(50) NOT NULL,
+	password VARCHAR(100) NOT NULL,
+	data TIMESTAMP NOT NULL,
+	PRIMARY KEY (username)
+);
+
+CREATE TABLE CTF (
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	titolo VARCHAR(100) NOT NULL,
+	difficolta INTEGER NOT NULL,
+	CONSTRAINT difficolta CHECK (difficolta BETWEEN 1 AND 10),
+	data TIMESTAMP NOT NULL,
+	descrizione VARCHAR(500) NOT NULL,
+	flag VARCHAR(100) NOT NULL,
+	utente VARCHAR(50) NOT NULL,
+	categoria ENUM("Binary Exploitation", "Web Exploitation", "Reverse Engineering", "Forensic") NOT NULL,
+	PRIMARY KEY (id)
+);
+ALTER TABLE CTF
+	ADD FOREIGN KEY (utente) REFERENCES Utente (username);
+
+CREATE TABLE Commenti (
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	ts TIMESTAMP NOT NULL,
+	testo VARCHAR(1000) NOT NULL,
+	utente VARCHAR(50) NOT NULL,
+	ctf INTEGER NOT NULL,
+	PRIMARY KEY (id)
+);
+ALTER TABLE Commenti
+	ADD FOREIGN KEY (utente) REFERENCES Utente (username);
+ALTER TABLE Commenti
+	ADD FOREIGN KEY (ctf) REFERENCES CTF (id);
+
+CREATE TABLE Hints (
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	testo VARCHAR(1000) NOT NULL,
+	ctf INTEGER NOT NULL,
+	PRIMARY KEY (id)
+);
+ALTER TABLE Hints
+	ADD FOREIGN KEY (ctf) REFERENCES CTF (id);
+
+CREATE TABLE Attempts (
+	id INTEGER NOT NULL AUTO_INCREMENT,
+	utente VARCHAR(50) NOT NULL,
+	ctf INTEGER NOT NULL,
+	PRIMARY KEY (id)
+);
+ALTER TABLE Attempts
+	ADD FOREIGN KEY (utente) REFERENCES Utente (username);
+ALTER TABLE Attempts
+	ADD FOREIGN KEY (ctf) REFERENCES CTF (id);
+
+CREATE TABLE Writeup (
+	utente VARCHAR(50) NOT NULL,
+	ctf INTEGER NOT NULl,
+	PRIMARY KEY (utente, ctf)
+);
+ALTER TABLE Writeup
+	ADD FOREIGN KEY (utente) REFERENCES Utente (username);
+ALTER TABLE Writeup
+	ADD FOREIGN KEY (ctf) REFERENCES CTF (id);
+
+CREATE TABLE Risolte (
+	utente VARCHAR(50) NOT NULL,
+	ctf INTEGER NOT NULl,
+	ts TIMESTAMP NOT NULL,
+	PRIMARY KEY (utente, ctf)
+);
+ALTER TABLE Risolte
+	ADD FOREIGN KEY (utente) REFERENCES Utente (username);
+ALTER TABLE Risolte
+	ADD FOREIGN KEY (ctf) REFERENCES CTF (id);
