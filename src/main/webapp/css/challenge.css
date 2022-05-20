@@ -1,0 +1,32 @@
+.ctf_box {
+	margin: auto;
+	width:40%;
+	padding: 10px;
+	text-align: center;
+	background-color: #202020;
+}
+
+input[type=text] {
+	width: 50%;
+    padding: 7px 16px;
+    margin: 8px 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-color: black;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.ctf_body {
+	text-align: left;
+	line-height: 3px;
+	margin: 10px;
+}
+
+.ctf_points {
+	text-align: right;
+}
+
+.ctf_flag {
+	text-align: left;
+}

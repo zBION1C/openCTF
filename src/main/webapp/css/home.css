@@ -1,0 +1,61 @@
+.topnav {
+  overflow: hidden;
+  background-color: #202020;
+}
+.topnav a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+.topnav a:hover {
+  background-color: #181818;
+  color: white;
+}
+.topnav a.active {
+  background-color: #F01C1C;
+}
+.topnav .search-container {
+  float: right;
+}
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+.topnav .search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #F01C1C;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+.topnav .search-container button:hover {
+  background: #a40000;
+}
+.main {
+	display: grid;
+	grid-gap: 10px;
+}
+.ctf_list {
+	width: 100%;
+}
+.ctf_list td, .ctf_list th {
+	padding: 16px;
+}
+.ctf_list tr:nth-child(even){background-color: #252525;}
+
+.ctf_list tr:hover {background-color: #191919; cursor: pointer;}
+
+.ctf_list th {
+  cursor: alias;
+  background-color: #F01C1C;
+  color: white;
+}

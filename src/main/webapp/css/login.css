@@ -1,0 +1,36 @@
+input[type=text], [type=password] {
+    width: 100%;
+    padding: 7px 16px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-color: black;
+    box-sizing: border-box;
+    text-align: center;
+}
+.grid {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    gap: 10px;
+    grid-auto-flow: row;
+}
+.logo {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+}
+.login, .register {
+    border-radius: 9px;
+    background-color: #252525;
+    padding: 35px 70px;
+    border: solid 1px;
+    border-color: black;
+}
+.login_button, .register_button {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}

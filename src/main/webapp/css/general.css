@@ -1,0 +1,26 @@
+body {
+    display: grid;
+    font-family: Verdana, sans-serif;
+    background-color: #333333;
+    color: white;
+}
+button {
+    background-color: #F01C1C;
+    color: white;
+    border: solid;
+    border-color: black;
+    border-width: 1px;
+    padding: 10px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #a40000;
+}
+button:active {
+    top: 1px;
+    box-shadow: 0 4px #121212;
+    transform: translateY(4px);
+}
+

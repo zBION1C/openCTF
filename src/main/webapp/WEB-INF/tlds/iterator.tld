@@ -1,0 +1,16 @@
+<taglib>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>1.1</jspversion>
+	<shortname>Iteratore</shortname>
+		
+	<tag>
+		<name>iterate</name>
+		<tagclass> tags.IterateHandler </tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name> list </name>
+			<require> true </require>
+			<rtexprvalue> true </rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>
