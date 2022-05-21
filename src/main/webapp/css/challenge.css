@@ -1,11 +1,3 @@
-.ctf_box {
-	margin: auto;
-	width:40%;
-	padding: 10px;
-	text-align: center;
-	background-color: #202020;
-}
-
 input[type=text] {
 	width: 50%;
     padding: 7px 16px;
@@ -17,16 +9,73 @@ input[type=text] {
     text-align: center;
 }
 
-.ctf_body {
-	text-align: left;
+.hint{
+	padding: 12px;
+}
+
+.ctf_box {
+	position: relative;
+	margin: auto;
+	width:40%;
+	padding: 10px;
+	text-align: center;
+	background-color: #202020;
+	display: flex;
+	flex-direction: column;
+}
+.ctf_box hr {
+  	width: 100%;
+}
+.header {
+	align-self: stretch;
+	display: flex;
+}
+.title {
+	padding: 10px;
 	line-height: 3px;
-	margin: 10px;
+}
+.points {
+	padding: 10px;
+	margin-left: auto;
 }
 
-.ctf_points {
-	text-align: right;
+.body {
+	display: flex;
+	column-gap: 200px;
 }
-
-.ctf_flag {
+.description {
 	text-align: left;
+	padding: 5px;
 }
+.body h4 {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+
+.hints {
+	text-align: left;
+	padding: 5px;
+	margin-left: 200px;
+}
+
+.hints_but {
+	display: block;
+	flex-direction: flex;
+}
+
+.hints h4{
+	margin-top: 3px;
+}
+
+.stats {
+	padding: 10px;
+	background-color: #252525;
+	align-self: stretch;
+}
+
+.flag {
+	padding: 10px;
+	align-self: stretch;
+}
+
+

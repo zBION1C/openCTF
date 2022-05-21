@@ -32,7 +32,6 @@ public class RegisterServlet extends HttpServlet {
 		out.println("<body>");
 		
 		HttpSession session = request.getSession(true);
-		Connection connection = (Connection) session.getAttribute("connection");
 		
 		try {
 			if (username.equals("") || password.equals("")){
@@ -41,7 +40,7 @@ public class RegisterServlet extends HttpServlet {
 			else if (!password.equals(snd_password)) {
 				out.println("Passwords do not match.");
 			} else {
-				Dao.register(connection, username, password);
+				Dao.register(username, password);
 				out.println("<p>Your account has been registered.</p>");
 			}
 		} catch ( SQLException e ) {

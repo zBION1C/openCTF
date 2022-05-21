@@ -9,7 +9,6 @@
 
 	<% 
 	UserBean user = (UserBean) session.getAttribute("currentUser");
-	session.setAttribute("connection", Dao.connect());
 	%>
 
 	<head>
@@ -48,20 +47,15 @@
 					<th> Date </th>
 				</thead>
 			
-			<it:iterate list="<%= Dao.getCTF((Connection)session.getAttribute(\"connection\")) %>">	
-				<tr style="text-align: center;" onclick="window.location='Challenge?id=<%=pageContext.getAttribute("id")%>';">
-					<td><%= pageContext.getAttribute("title") %></td>
-					<td><%= pageContext.getAttribute("creator") %></td>
-					<td><%= pageContext.getAttribute("category") %></td>
-					<td><%= pageContext.getAttribute("difficulty") %></td>
-					<td><%= pageContext.getAttribute("date") %></td>
-					</a>
+			<it:iterate list="<%= Dao.getCTF() %>">
+				<% CtfBean ctf = (CtfBean) pageContext.getAttribute("item"); %>
+				<tr style="text-align: center;" onclick="window.location='Challenge?id=<%=ctf.getId()%>';">
+					<td><%= ctf.getTitle() %></td>
+					<td><%= ctf.getCreator() %></td>
+					<td><%= ctf.getCategory() %></td>
+					<td><%= ctf.getDifficulty() %></td>
+					<td><%= ctf.getDate() %></td>
 				</tr>
-				
-				<!--
-				<a class="description"><%= pageContext.getAttribute("description") %></a>
-				<div class="hints">Hints</div>
-				-->
 			</it:iterate>
 			
 			</table>	

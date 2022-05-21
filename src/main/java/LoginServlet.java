@@ -33,10 +33,9 @@ public class LoginServlet extends HttpServlet {
 		UserBean user = new UserBean();
 		
 		HttpSession session = request.getSession(true);
-		Connection connection = (Connection) session.getAttribute("connection");
 		
 		try {
-			if (Dao.validate(connection ,user, username, password)) {
+			if (Dao.validate(user, username, password)) {
 				out.println("<p> Username: " + username + "</p>");
 				out.println("<p> Password: " + password + "</p>");
 

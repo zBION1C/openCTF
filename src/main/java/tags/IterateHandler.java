@@ -24,30 +24,16 @@ public class IterateHandler extends BodyTagSupport {
 	public void doInitBody() throws JspException {
 		iterator = list.iterator();
 		
-		CtfBean ctf = (CtfBean) iterator.next();
+		Object e = iterator.next();
 		
-		pageContext.setAttribute("id", ctf.getId());
-		pageContext.setAttribute("title", ctf.getTitle());
-		pageContext.setAttribute("difficulty", ctf.getDifficulty());
-		pageContext.setAttribute("date", ctf.getDate());
-		pageContext.setAttribute("description", ctf.getDescription());
-		pageContext.setAttribute("flag", ctf.getFlag());
-		pageContext.setAttribute("creator", ctf.getCreator());
-		pageContext.setAttribute("category", ctf.getCategory());
+		pageContext.setAttribute("item", e);
 	}
 
 	public int doAfterBody() throws JspException {
 		if (iterator.hasNext()) {
-			CtfBean ctf = (CtfBean) iterator.next();
+			Object e = iterator.next();
 						
-			pageContext.setAttribute("id", ctf.getId());
-			pageContext.setAttribute("title", ctf.getTitle());
-			pageContext.setAttribute("difficulty", ctf.getDifficulty());
-			pageContext.setAttribute("date", ctf.getDate());
-			pageContext.setAttribute("description", ctf.getDescription());
-			pageContext.setAttribute("flag", ctf.getFlag());
-			pageContext.setAttribute("creator", ctf.getCreator());
-			pageContext.setAttribute("category", ctf.getCategory());
+			pageContext.setAttribute("item", e);
 			
 			return EVAL_BODY_AGAIN;
 		} else {
