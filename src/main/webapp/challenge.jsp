@@ -1,7 +1,7 @@
 <?xml version = "1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN\http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 
-<%@ page language="java" import="dao.Dao,java.util.*,ctf.CtfBean, hint.HintBean"%>
+<%@ page language="java" import="dao.Dao,java.util.*,ctf.CtfBean, hint.HintBean, comment.CommentBean, user.UserBean"%>
 
 <html xmlns = "http://www.w3.org/1999/xhtml">
 	
@@ -10,6 +10,21 @@
 	<%
 	Integer id = Integer.parseInt(request.getParameter("id"));
 	CtfBean ctf = Dao.getCtfById(id); 
+	
+	UserBean user = (UserBean) session.getAttribute("currentUser");
+	
+	Boolean alreadyCompleted = Dao.alreadyResolved(user.getUsername(), id);
+	
+	String flag = (String) request.getParameter("flag");
+	Boolean resolved = false;
+	if (flag != null) {
+		resolved = ctf.validateFlag(flag, user);	
+	}
+	
+	String c = (String)request.getParameter("comment");
+	if (c != null && !c.equals("")){
+		Dao.putComment(c, user.getUsername(), id);
+	}
 	%>
 	
 	<script>
@@ -21,6 +36,7 @@
 	<head>
 		<link rel="stylesheet" href="css/general.css">
 		<link rel="stylesheet" href="css/challenge.css">
+		
 		<title>Challenge</title>
 	</head>
 	
@@ -32,13 +48,13 @@
 					<p style="font-size:13px;">Author: <%=ctf.getCreator()%></p>
 				</div>
 				<div class="points">
-					<p>Points: <%= ctf.getDifficulty()*10 %> </p>
+					<p><%= ctf.getDifficulty()*10 %> Points</p>
 				</div>
 			</div>
 			
 			<hr>
-			
-			<div class="body">
+
+			<div class="body">			
 				<div class="description">
 					<h4>Description</h4>
 					<p><%= ctf.getDescription() %></p>
@@ -51,23 +67,26 @@
 				<div class="hints">
 					<h4>Hints</h4>
 					
-					<it:iterate list="<%= Dao.getHints(id) %>">
-						<% HintBean hint = (HintBean) pageContext.getAttribute("item"); %>
-						<% 
-						cnt = cnt + 1;
-						testo = hint.getTesto(); 
-						%>
-						
-					
-						<div class="hints_but">
+					<div class="hints_but">
+						<it:iterate list="<%= Dao.getHints(id) %>">
+							<% HintBean hint = (HintBean) pageContext.getAttribute("item"); %>
+							<% 
+							cnt = cnt + 1;
+							testo = hint.getTesto(); 
+							%>
+							
 							<button class="hint" onclick="printHint('<%= testo %>')" > <%= cnt %> </button>
-						</div>
-						
-					</it:iterate>
+						</it:iterate>
+					</div>
 					
 					<p id="hint"></p>	
 					
 				</div>
+			</div>
+			
+			<div class="file">
+				<h5>Download files</h5>
+				<a href="css/general.css" download>file1.py</a>
 			</div>
 			
 			<div class="stats">
@@ -79,13 +98,49 @@
 				<%=n%> solves / <%=m%> attempts (<%= m!=0 ?(float) n / m : 0%>%)
 			</div>
 			
+			<% if (!alreadyCompleted && !resolved) {%>
+			
 			<div class="flag">
-				<input type="text" placeholder="openCTF{flag}" name="flag">
-					
-				<button type="submit">Submit</button>
+				<form action="Challenge?id=<%= id %>" method="post">
+					<input type="text" placeholder="openCTF{flag}" name="flag">
+						
+					<button type="submit">Submit</button>
+				</form>
 			</div>
-		
+			
+			<% } else { %>
+				<h5>You already completed this challenge!</h5>
+			<% } %>
+			<hr>
+			
+			<div class="comments">
+				<h4>Comments</h4>
+				<% if (user != null) { %>
+				<form action="Challenge?id=<%= id %>" method="post">
+					<textarea name="comment" placeholder="Insert comment here..."></textarea>
+					<button type="submit">Submit</button>
+				</form>
+				<% } %>
+				
+				<it:iterate list="<%= Dao.getComments(id) %>">
+					<% CommentBean comm = (CommentBean) pageContext.getAttribute("item"); %>
+					<div id="comm">
+					<%= comm.getUtente() %> · <%= comm.getTs() %>
+					<p style="padding-left: 5px; margin-bottom: 3px;overflow-wrap: break-word; max-width: 700px;"> <%= comm.getTesto() %></p>
+					</div>
+				</it:iterate>
+				
+			</div>
+			
 		</div>
 	</body>
-	
 </html>
+
+
+
+
+
+
+
+
+

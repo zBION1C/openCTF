@@ -24,3 +24,7 @@ button:active {
     transform: translateY(4px);
 }
 
+button[disabled]{
+	background-color: #470303;
+}
+

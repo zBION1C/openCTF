@@ -1,0 +1,65 @@
+.main {
+	position: relative;
+	margin: auto;
+	width:40%;
+	padding: 10px;
+	text-align: center;
+	background-color: #202020;
+	display: flex;
+	flex-direction: column;
+}
+
+.main hr {
+	width: 100%;
+}
+
+.header {
+	padding: 5px;
+	align-self: stretch;
+	text-align: left;
+	line-height: 3px;
+}
+
+.stats {
+	padding: 5px;
+	display: flex;
+	flex-direction: row;
+	text-align: left;
+}
+
+.stats h3 {
+	margin-top: 3px;
+}
+
+.points {
+	text-align: left;
+}
+
+.points p {
+	padding-left: 10px;
+	line-height: 10px;
+}
+.misc {
+	text-align: left;
+	margin-left: auto;
+}
+
+.misc p {
+	padding-left: 10px;
+	line-height: 10px;
+}
+
+p .highlight {
+	color: #F01C1C;
+}
+
+
+
+
+
+
+
+
+
+
+

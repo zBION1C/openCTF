@@ -6,6 +6,7 @@ import java.sql.*;
 import user.UserBean;
 import ctf.CtfBean;
 import hint.HintBean;
+import comment.CommentBean;
 
 public class Dao {
     public static Connection connect() throws SQLException, ClassNotFoundException {
@@ -29,9 +30,11 @@ public class Dao {
         if (state) {
             user.setUsername(result.getString(1));
             user.setPassword(result.getString(2));
+            user.setDate(result.getString(3));
         }
 
         getUser.close();
+        connection.close();
 
         return state;
     }
@@ -47,6 +50,7 @@ public class Dao {
         addUser.executeUpdate();
 
         addUser.close();
+        connection.close();
     }
 
     public static List<CtfBean> getCTF() throws SQLException, ClassNotFoundException {
@@ -72,6 +76,7 @@ public class Dao {
     		ctfs.add(ctf);
     	}
     	
+    	statement.close();
     	connection.close();
     	
     	return ctfs;
@@ -129,6 +134,79 @@ public class Dao {
     	return hints;
     }
     
+    public static List<CommentBean> getComments(Integer id) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement getComm = connection.prepareStatement("SELECT * FROM Commenti WHERE ctf = ?");
+    	
+    	getComm.setInt(1, id);
+    	
+    	ResultSet response = getComm.executeQuery();
+    	
+    	List<CommentBean> comms = new ArrayList<CommentBean>();
+    	
+    	while (response.next()) {
+    		CommentBean comm = new CommentBean();
+    		comm.setId(response.getInt(1));
+    		comm.setTs(response.getString(2));
+    		comm.setTesto(response.getString(3));
+    		comm.setUtente(response.getString(4));
+    		comm.setCtf(response.getInt(5));
+    		
+    		comms.add(comm);
+    	}
+    	
+    	getComm.close();
+    	connection.close();
+    	
+    	return comms;
+    }
+    
+    public static void putComment(String testo, String utente, Integer id) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement put = connection.prepareStatement("INSERT INTO Commenti (ts, testo, utente, ctf) VALUES (NOW(), ?, ?, ?)");
+    	
+    	put.setString(1, testo);
+    	put.setString(2, utente);
+    	put.setInt(3, id);
+    	
+    	put.executeUpdate();
+    	
+    	connection.close();
+    	put.close();
+    }
+    
+    public static void resolved(String utente, Integer ctf) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement put = connection.prepareStatement("INSERT INTO Risolte (utente, ctf, ts) VALUES (?, ?, NOW())");
+    	
+    	put.setString(1, utente);
+    	put.setInt(2, ctf);
+
+    	put.executeUpdate();
+    	
+    	connection.close();
+    	put.close();
+    }
+    
+    public static Boolean alreadyResolved(String utente, Integer ctf) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement res = connection.prepareCall("{? = call AlreadyResolved(?, ?)}");
+    	
+    	res.registerOutParameter(1, Types.BOOLEAN);
+    	
+    	res.setInt(2, ctf);
+    	res.setString(3, utente);
+    	
+    	res.execute();
+
+    	Boolean b = res.getBoolean(1); 
+    	
+    	connection.close();
+    	res.close();
+    
+    	return b;
+    }
+    
     public static int getResolvers(Integer id) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
     	CallableStatement resolvers = connection.prepareCall("{? = call NumberResolver(?)}");
@@ -137,7 +215,6 @@ public class Dao {
     	
     	
     	resolvers.setInt(2, id);
-    	    	
     	resolvers.execute();
     	
     	int n = resolvers.getInt(1);
@@ -155,7 +232,6 @@ public class Dao {
     	attempts.registerOutParameter(1, Types.INTEGER);
     
     	attempts.setInt(2, id);
-    	    	
     	attempts.execute();
     
     	int m = attempts.getInt(1);
@@ -164,6 +240,110 @@ public class Dao {
     	connection.close();
     	
     	return m;
+    }
+    
+    public static int getUserAttempts(String username) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement attempts = connection.prepareCall("{? = call UserAttemptedCtf(?)}");
+    	
+    	attempts.registerOutParameter(1, Types.INTEGER);
+    	
+    	attempts.setString(2, username);
+    	attempts.execute();
+    	
+    	int m = attempts.getInt(1);
+    	
+    	attempts.close();
+    	connection.close();
+    	
+    	return m;
+    }
+    
+    public static int getUserPoints(String username) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement points = connection.prepareCall("{? = call UserPoints(?)}");
+    		
+    	points.registerOutParameter(1, Types.INTEGER);
+    	
+    	points.setString(2, username);
+    	points.execute();
+    	
+    	int m = points.getInt(1);
+    	
+    	points.close();
+    	connection.close();
+    	
+    	return m;
+    }
+    
+    public static int getUserPointsCat(String username, String cat) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement points = connection.prepareCall("{? = call UserPointsCat(?, ?)}");
+    	
+    	points.registerOutParameter(1, Types.INTEGER);
+    	
+    	points.setString(2, username);
+    	points.setString(3, cat);
+    	points.execute();
+    	
+    	int m = points.getInt(1);
+    	
+    	points.close();
+    	connection.close();
+    	
+    	return m;
+    }
+    
+    public static int getUserResolved(String username) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement points = connection.prepareCall("{? = call UserResolvedCtfs(?)}");
+    	
+    	points.registerOutParameter(1, Types.INTEGER);
+    	
+    	points.setString(2, username);
+    	points.execute();
+    	
+    	int m = points.getInt(1);
+    	
+    	points.close();
+    	connection.close();
+    	
+    	return m;
+    }
+    
+    public static int getUserResolvedCat(String username, String cat) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement points = connection.prepareCall("{? = call UserResolvedCtfsCat(?, ?)}");
+    	
+    	points.registerOutParameter(1, Types.INTEGER);
+    	
+    	points.setString(2, username);
+    	points.setString(3, cat);
+    	points.execute();
+    	
+    	int m = points.getInt(1);
+    	
+    	points.close();
+    	connection.close();
+    	
+    	return m;	
+    }
+    
+    public static int getFirstBloods(String username) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement points = connection.prepareCall("{? = call NumberFirstResolver(?)}");
+    	
+    	points.registerOutParameter(1, Types.INTEGER);
+    	
+    	points.setString(2, username);
+    	points.execute();
+    	
+    	int m = points.getInt(1);
+    	
+    	points.close();
+    	connection.close();
+    	
+    	return m;	
     }
 }
 

@@ -17,6 +17,11 @@
     	<servlet-name>Challenge</servlet-name>
     	<jsp-file>/challenge.jsp</jsp-file>
 	</servlet>
+	
+	<servlet>
+    	<servlet-name>Profile</servlet-name>
+    	<jsp-file>/profile.jsp</jsp-file>
+	</servlet>
 
 	<servlet>
 		<servlet-name>Login</servlet-name>
@@ -37,5 +42,11 @@
 		<servlet-name>Challenge</servlet-name>
 		<url-pattern>/Challenge</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Profile</servlet-name>
+		<url-pattern>/Profile</url-pattern>
+	</servlet-mapping>
+
 
 </web-app>

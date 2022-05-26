@@ -8,11 +8,9 @@ input[type=text] {
     box-sizing: border-box;
     text-align: center;
 }
-
 .hint{
 	padding: 12px;
 }
-
 .ctf_box {
 	position: relative;
 	margin: auto;
@@ -38,12 +36,12 @@ input[type=text] {
 	padding: 10px;
 	margin-left: auto;
 }
-
 .body {
 	display: flex;
-	column-gap: 200px;
+	column-gap: 100px;
 }
 .description {
+	width: 700px;
 	text-align: left;
 	padding: 5px;
 }
@@ -51,23 +49,41 @@ input[type=text] {
 	margin-top: 3px;
 	margin-bottom: 3px;
 }
-
 .hints {
+	flex-direction: column;
+	display: flex;
+	flex-basis: 600px;
 	text-align: left;
 	padding: 5px;
-	margin-left: 200px;
+	margin-left: auto;
+}
+
+.hints #hint {
+	overflow-wrap: break-word;
+	max-width: 300px;
+	background-color: #252525; 
 }
 
 .hints_but {
-	display: block;
-	flex-direction: flex;
+	flex-direction: row;
+}
+
+.hints_but button {
+	height: 40px;
+	width: 40px;
 }
 
 .hints h4{
 	margin-top: 3px;
 }
 
+.hints br{
+	width: 10px;
+}
+
 .stats {
+	margin: 0px;
+	margin-top: 10px;
 	padding: 10px;
 	background-color: #252525;
 	align-self: stretch;
@@ -77,5 +93,60 @@ input[type=text] {
 	padding: 10px;
 	align-self: stretch;
 }
+
+.file {
+	padding: 5px;
+	text-align: left;
+}
+.file h5 {
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+.file a {
+	color: #F01C1C;
+}
+.comments {
+	display: flex;
+	flex-direction: column;
+	row-gap: 5px;
+	padding: 5px;
+}
+
+.comments h4 {
+	margin-top: 5px;
+	text-align: left;
+}
+
+.comments textarea {
+	align-self: stretch;
+	resize: none;
+	width: 100%;
+	height:80px;
+}
+
+.comments button {
+	text-align: center;
+	width: 90%;
+	margin: 0px;
+}
+
+.comments #comm {
+	padding: 10px;
+	background-color: #252525;
+	text-align: left;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

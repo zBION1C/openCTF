@@ -3,9 +3,14 @@ package user;
 public class UserBean {
 	private String username;
 	private String password;
+	private String date;
 
 	public UserBean() {}
 
+	public void setDate(String x) {
+		date = x;
+	}
+	
 	public void setUsername(String x) {
 		username = x;
 	}
@@ -21,4 +26,9 @@ public class UserBean {
 	public String getPassword() {
 		return password;
 	}
+	
+	public String getDate() {
+		return date;
+	}
+	
 }

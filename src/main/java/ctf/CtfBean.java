@@ -1,4 +1,8 @@
 package ctf;
+import java.sql.SQLException;
+
+import dao.Dao;
+import user.UserBean;
 
 public class CtfBean {
 	Integer id;
@@ -11,6 +15,15 @@ public class CtfBean {
 	String category;
 	
 	public CtfBean() {}
+	
+	public Boolean validateFlag(String flag, UserBean utente) throws SQLException, ClassNotFoundException {
+		if (this.flag.equals(flag)) {
+			Dao.resolved(utente.getUsername(), this.id);
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public void setId(Integer x) {
 		id = x;

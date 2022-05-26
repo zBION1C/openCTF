@@ -24,7 +24,7 @@
 			<div class="topnav">
 				<a class="active" href="index.jsp">Home</a>
 				<% if (user != null) { %>
-				<a href="#profile">Profile</a>
+				<a href="Profile">Profile</a>
 				<%} else {%>
 				<a href="login.html">Login</a>
 				<a href="register.html">Register</a>
