@@ -3,6 +3,7 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.sql.*;
 import dao.Dao;
+import user.UserBean;
 
 public class RegisterServlet extends HttpServlet {
 	private String username;
@@ -41,7 +42,10 @@ public class RegisterServlet extends HttpServlet {
 				out.println("Passwords do not match.");
 			} else {
 				Dao.register(username, password);
-				out.println("<p>Your account has been registered.</p>");
+				UserBean user = new UserBean();
+				Dao.validate(user, username, password);
+				session.setAttribute("currentUser", user);
+				response.sendRedirect("index.jsp");
 			}
 		} catch ( SQLException e ) {
             String state = e.getSQLState();

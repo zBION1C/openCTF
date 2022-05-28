@@ -7,6 +7,7 @@ import user.UserBean;
 import ctf.CtfBean;
 import hint.HintBean;
 import comment.CommentBean;
+import file.FileBean;
 
 public class Dao {
     public static Connection connect() throws SQLException, ClassNotFoundException {
@@ -134,6 +135,19 @@ public class Dao {
     	return hints;
     }
     
+    public static void addHint(String testo, Integer id) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement res = connection.prepareStatement("INSERT INTO Indizi (testo, ctf) VALUES (?, ?)");
+
+        res.setString(1, testo);
+        res.setInt(2, id);
+        
+        res.executeUpdate();
+
+        res.close();
+        connection.close();
+    }
+    
     public static List<CommentBean> getComments(Integer id) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
     	PreparedStatement getComm = connection.prepareStatement("SELECT * FROM Commenti WHERE ctf = ?");
@@ -159,6 +173,30 @@ public class Dao {
     	connection.close();
     	
     	return comms;
+    }
+    
+    public static List<FileBean> getFiles(Integer id) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement getF = connection.prepareStatement("SELECT * FROM Files WHERE ctf = ?");
+    	
+    	getF.setInt(1, id);
+    	
+    	ResultSet response = getF.executeQuery();
+    	
+    	List<FileBean> files = new ArrayList<FileBean>();
+    	
+    	while (response.next()) {
+    		FileBean f = new FileBean();
+    		f.setName(response.getString(1));
+    		f.setCtf(response.getInt(2));
+    		
+    		files.add(f);
+    	}
+    	
+    	getF.close();
+    	connection.close();
+    	
+    	return files;
     }
     
     public static void putComment(String testo, String utente, Integer id) throws SQLException, ClassNotFoundException {
@@ -199,6 +237,25 @@ public class Dao {
     	
     	res.execute();
 
+    	Boolean b = res.getBoolean(1); 
+    	
+    	connection.close();
+    	res.close();
+    
+    	return b;
+    }
+    
+    public static Boolean alreadyAttempted(String utente, Integer ctf) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement res = connection.prepareCall("{? = call AlreadyAttempted(?, ?)}");
+    	
+    	res.registerOutParameter(1, Types.BOOLEAN);
+    	
+    	res.setInt(2, ctf);
+    	res.setString(3, utente);
+    	
+    	res.execute();
+    	
     	Boolean b = res.getBoolean(1); 
     	
     	connection.close();
@@ -345,6 +402,59 @@ public class Dao {
     	
     	return m;	
     }
+    
+    public static int addCTF(String title, Integer diff, String descr, String flag, String user, String cat) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement put = connection.prepareStatement("INSERT INTO CTF (titolo, difficolta, data, descrizione, flag, utente, categoria) VALUES (?, ?, NOW(), ?, ?, ?, ?)");
+    	
+    	put.setString(1, title);
+    	put.setInt(2, diff);
+    	put.setString(3, descr);
+    	put.setString(4, flag);
+    	put.setString(5, user);
+    	put.setString(6, cat);
+    	
+    	put.executeUpdate();
+    	
+    	Statement getId = connection.createStatement();
+    	ResultSet response = getId.executeQuery("SELECT LAST_INSERT_ID();");
+    	response.next();
+    	int id = response.getInt(1);
+        	
+    	put.close();
+    	getId.close();
+    	connection.close();
+    	
+    	return id;
+    }
+    
+    public static void addFile(String nome, Integer ctf) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement put = connection.prepareStatement("INSERT INTO Files VALUES (?, ?)");
+    	
+    	put.setString(1, nome);
+    	put.setInt(2, ctf);
+    	
+    	put.executeUpdate();
+    	
+    	put.close();
+    	connection.close();	
+    }
+    
+    public static void updateAttempts(String user, Integer ctf) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement put = connection.prepareStatement("INSERT INTO Prova VALUES (?, ?)");
+    	
+    	put.setString(1, user);
+    	put.setInt(2, ctf);
+    	
+    	put.executeUpdate();
+    	
+    	put.close();
+    	connection.close();
+    	
+    }
+    
 }
 
 

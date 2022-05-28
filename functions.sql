@@ -199,3 +199,24 @@ BEGIN
 END
 $$
 DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION AlreadyAttempted(ctf INTEGER, utente VARCHAR(50))
+RETURNS BOOLEAN DETERMINISTIC
+BEGIN
+	DECLARE n INTEGER;
+	
+	SELECT CTF.id INTO n
+	FROM  CTF, Prova
+	WHERE CTF.id = ctf AND
+	      Prova.ctf = CTF.id AND
+	      Prova.utente = utente;
+
+	IF ISNULL(n) THEN
+		RETURN FALSE;
+	ELSE
+		RETURN TRUE;
+	END IF;
+END
+$$
+DELIMITER ;

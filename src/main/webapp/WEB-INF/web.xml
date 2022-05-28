@@ -12,6 +12,11 @@
 		<servlet-name>Register</servlet-name>
 		<servlet-class>RegisterServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>AddCtf</servlet-name>
+		<servlet-class>AddCtfServlet</servlet-class>
+	</servlet>
 
 	<servlet>
     	<servlet-name>Challenge</servlet-name>
@@ -36,6 +41,11 @@
 	<servlet-mapping>
 		<servlet-name>Register</servlet-name>
 		<url-pattern>/Register</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>AddCtf</servlet-name>
+		<url-pattern>/AddCtf</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

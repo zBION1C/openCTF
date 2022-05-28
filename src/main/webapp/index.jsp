@@ -25,6 +25,8 @@
 				<a class="active" href="index.jsp">Home</a>
 				<% if (user != null) { %>
 				<a href="Profile">Profile</a>
+				<a href="addCtf.html">Add CTF</a>
+				<a href="#daje">Logout</a>
 				<%} else {%>
 				<a href="login.html">Login</a>
 				<a href="register.html">Register</a>
@@ -38,28 +40,29 @@
 	  			</div>
 			</div>
 		
-			<table class="ctf_list">
-				<thead>
-					<th> Name </th>
-					<th> Author </th>
-					<th> Category </th>
-					<th> Difficulty </th>
-					<th> Date </th>
-				</thead>
-			
-			<it:iterate list="<%= Dao.getCTF() %>">
-				<% CtfBean ctf = (CtfBean) pageContext.getAttribute("item"); %>
-				<tr style="text-align: center;" onclick="window.location='Challenge?id=<%=ctf.getId()%>';">
-					<td><%= ctf.getTitle() %></td>
-					<td><%= ctf.getCreator() %></td>
-					<td><%= ctf.getCategory() %></td>
-					<td><%= ctf.getDifficulty() %></td>
-					<td><%= ctf.getDate() %></td>
-				</tr>
-			</it:iterate>
-			
-			</table>	
-	
+			<div class="ctf_list_box">
+				<table class="ctf_list">
+					<thead>
+						<th> Name </th>
+						<th> Author </th>
+						<th> Category </th>
+						<th> Difficulty </th>
+						<th> Date </th>
+					</thead>
+				
+				<it:iterate list="<%= Dao.getCTF() %>">
+					<% CtfBean ctf = (CtfBean) pageContext.getAttribute("item"); %>
+					<tr style="text-align: center;" onclick="window.location='Challenge?id=<%=ctf.getId()%>';">
+						<td><%= ctf.getTitle() %></td>
+						<td><%= ctf.getCreator() %></td>
+						<td><%= ctf.getCategory() %></td>
+						<td><%= ctf.getDifficulty() %></td>
+						<td><%= ctf.getDate() %></td>
+					</tr>
+				</it:iterate>
+				
+				</table>	
+			</div>
 		</div>
 
 	</body>

@@ -24,6 +24,10 @@ input[type=text] {
 .ctf_box hr {
   	width: 100%;
 }
+.ctf_box a {
+	color: #F01C1C;
+}
+
 .header {
 	align-self: stretch;
 	display: flex;
@@ -101,9 +105,6 @@ input[type=text] {
 .file h5 {
 	margin-top: 3px;
 	margin-bottom: 3px;
-}
-.file a {
-	color: #F01C1C;
 }
 .comments {
 	display: flex;

@@ -44,6 +44,14 @@
 	display: grid;
 	grid-gap: 10px;
 }
+
+.ctf_list_box {
+	display:flex;
+	position: relative;
+	margin: auto;
+	width: 85%;
+}
+
 .ctf_list {
 	width: 100%;
 }

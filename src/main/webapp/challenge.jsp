@@ -1,7 +1,7 @@
 <?xml version = "1.0"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN\http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 
-<%@ page language="java" import="dao.Dao,java.util.*,ctf.CtfBean, hint.HintBean, comment.CommentBean, user.UserBean"%>
+<%@ page language="java" import="dao.Dao,java.util.*,ctf.CtfBean, hint.HintBean, comment.CommentBean, user.UserBean, file.FileBean"%>
 
 <html xmlns = "http://www.w3.org/1999/xhtml">
 	
@@ -12,18 +12,23 @@
 	CtfBean ctf = Dao.getCtfById(id); 
 	
 	UserBean user = (UserBean) session.getAttribute("currentUser");
-	
-	Boolean alreadyCompleted = Dao.alreadyResolved(user.getUsername(), id);
-	
-	String flag = (String) request.getParameter("flag");
+
+	Boolean alreadyCompleted = false;
 	Boolean resolved = false;
-	if (flag != null) {
-		resolved = ctf.validateFlag(flag, user);	
-	}
 	
-	String c = (String)request.getParameter("comment");
-	if (c != null && !c.equals("")){
-		Dao.putComment(c, user.getUsername(), id);
+	if (user != null) {	
+		
+		String flag = (String) request.getParameter("flag");
+		if (flag != null) {
+			resolved = ctf.validateFlag(flag, user);
+		}
+		
+		alreadyCompleted = Dao.alreadyResolved(user.getUsername(), id);
+		
+		String c = (String)request.getParameter("comment");
+		if (c != null && !c.equals("")){
+			Dao.putComment(c, user.getUsername(), id);
+		}
 	}
 	%>
 	
@@ -86,7 +91,13 @@
 			
 			<div class="file">
 				<h5>Download files</h5>
-				<a href="css/general.css" download>file1.py</a>
+				<it:iterate list="<%= Dao.getFiles(id) %>">
+					<% 
+					FileBean file = (FileBean) pageContext.getAttribute("item"); 
+					String path = "challenge/" + id + "/" + file.getName();
+					%>
+					<a href=<%= path %> download><%= file.getName() %></a>
+				</it:iterate>
 			</div>
 			
 			<div class="stats">
@@ -97,19 +108,19 @@
 				
 				<%=n%> solves / <%=m%> attempts (<%= m!=0 ?(float) n / m : 0%>%)
 			</div>
-			
-			<% if (!alreadyCompleted && !resolved) {%>
-			
-			<div class="flag">
-				<form action="Challenge?id=<%= id %>" method="post">
-					<input type="text" placeholder="openCTF{flag}" name="flag">
-						
-					<button type="submit">Submit</button>
-				</form>
-			</div>
-			
+					
+			<% if (user == null) { %>
+				<h5>You have to be <a href="login.html">logged</a> in to submit the flag.</h5>
+			<% } else if (!alreadyCompleted) { %>
+				<div class="flag">
+					<form action="Challenge?id=<%= id %>" method="post">
+						<input type="text" placeholder="openCTF{flag}" name="flag">
+							
+						<button type="submit">Submit</button>
+					</form>
+				</div>
 			<% } else { %>
-				<h5>You already completed this challenge!</h5>
+				<h5>You have completed this challenge!</h5>
 			<% } %>
 			<hr>
 			

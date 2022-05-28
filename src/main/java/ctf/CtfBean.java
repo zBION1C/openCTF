@@ -17,8 +17,13 @@ public class CtfBean {
 	public CtfBean() {}
 	
 	public Boolean validateFlag(String flag, UserBean utente) throws SQLException, ClassNotFoundException {
+		String username = utente.getUsername();
+		
+		if (!Dao.alreadyAttempted(username, this.id)) {
+			Dao.updateAttempts(username, this.id);
+		}
 		if (this.flag.equals(flag)) {
-			Dao.resolved(utente.getUsername(), this.id);
+			Dao.resolved(username, this.id);
 			return true;
 		} else {
 			return false;
