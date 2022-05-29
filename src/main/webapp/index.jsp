@@ -15,31 +15,15 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/general.css">
 		<link rel="stylesheet" href="css/home.css">
+		<link rel="stylesheet" href="css/topnav.css">
 
 		<title>Home</title>
 	</head>
 
-	<body>
+	<body>	
 		<div class=main>
-			<div class="topnav">
-				<a class="active" href="index.jsp">Home</a>
-				<% if (user != null) { %>
-				<a href="Profile">Profile</a>
-				<a href="addCtf.html">Add CTF</a>
-				<a href="#daje">Logout</a>
-				<%} else {%>
-				<a href="login.html">Login</a>
-				<a href="register.html">Register</a>
-				<%}%>
-	
-	  			<div class="search-container">
-	    		<form action="/Search">
-	     			<input type="text" placeholder="Search.." name="search">
-	      			<button type="submit"><i class="fa fa-search"></i></button>
-	    		</form>
-	  			</div>
-			</div>
-		
+			<%@ include file="topnav.jsp" %>
+			
 			<div class="ctf_list_box">
 				<table class="ctf_list">
 					<thead>

@@ -6,10 +6,6 @@ public class UserBean {
 	private String date;
 
 	public UserBean() {}
-
-	public void setDate(String x) {
-		date = x;
-	}
 	
 	public void setUsername(String x) {
 		username = x;
@@ -17,6 +13,10 @@ public class UserBean {
 
 	public void setPassword(String x) {
 		password = x;
+	}
+	
+	public void setDate(String x) {
+		date = x;
 	}
 
 	public String getUsername() {

@@ -7,36 +7,50 @@
 
 	<% 
 	UserBean user = (UserBean) session.getAttribute("currentUser");
+	String username = (String) request.getParameter("username");
+	String date;
+	
+	if (username != null) {
+		date = Dao.getUserDate(username);
+	}
+	else {
+		username = user.getUsername();
+		date = user.getDate();
+	}
 	%>
 
 	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/general.css">
 		<link rel="stylesheet" href="css/profile.css">
+		<link rel="stylesheet" href="css/topnav.css">
 		<title>Profile</title>
 	</head>
 	
 	<body>
+		<%@ include file="topnav.jsp" %>
+		
 		<div class="main">
 			<div class="header">
-				<h3><%=user.getUsername()%></h3>
-				<p style="font-size:13px;">signed in: <%= user.getDate() %></p>
+				<h3><%= username %></h3>
+				<p style="font-size:13px;">signed in: <%= date %></p>
 			</div>
 			<hr>
 			<div class="stats">
 				<div class="points">
 					<h3>Statistics</h3>
-					<p>Binary Exploitation : <%= Dao.getUserResolvedCat(user.getUsername(), "Binary Exploitation") %></p>
-					<p>Reverse Engineering : <%= Dao.getUserResolvedCat(user.getUsername(), "Reverse Engineering") %></p>
-					<p>Web Exploitation : <%= Dao.getUserResolvedCat(user.getUsername(), "Web Exploitation") %></p>
-					<p>Forensic : <%= Dao.getUserResolvedCat(user.getUsername(), "Forensic") %></p>
-					<p><b>Total points : <%= Dao.getUserPoints(user.getUsername()) %></b></p>
+					<p>Binary Exploitation : <%= Dao.getUserResolvedCat(username, "Binary Exploitation") %></p>
+					<p>Reverse Engineering : <%= Dao.getUserResolvedCat(username, "Reverse Engineering") %></p>
+					<p>Web Exploitation : <%= Dao.getUserResolvedCat(username, "Web Exploitation") %></p>
+					<p>Forensic : <%= Dao.getUserResolvedCat(username, "Forensic") %></p>
+					<p><b>Total points : <%= Dao.getUserPoints(username) %></b></p>
 				</div>
 			
 				<div class="misc">
 					<h3>Other Statistics</h3>
-					<p>Number of Attempted challenges: <%= Dao.getUserAttempts(user.getUsername())%> </p>
-					<p>Number of resolved challenges: <%= Dao.getUserResolved(user.getUsername()) %></p>
-					<p>Number of <span class="highlight">"first bloods"</span> : <%= Dao.getFirstBloods(user.getUsername()) %></p>
+					<p>Number of Attempted challenges: <%= Dao.getUserAttempts(username)%> </p>
+					<p>Number of resolved challenges: <%= Dao.getUserResolved(username) %></p>
+					<p>Number of <span class="highlight">"first bloods"</span> : <%= Dao.getFirstBloods(username) %></p>
 				</div>
 			
 			</div>

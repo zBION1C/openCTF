@@ -12,7 +12,6 @@
 	CtfBean ctf = Dao.getCtfById(id); 
 	
 	UserBean user = (UserBean) session.getAttribute("currentUser");
-
 	Boolean alreadyCompleted = false;
 	Boolean resolved = false;
 	
@@ -39,13 +38,17 @@
 	</script>
 	
 	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="css/general.css">
 		<link rel="stylesheet" href="css/challenge.css">
+		<link rel="stylesheet" href="css/topnav.css">
 		
 		<title>Challenge</title>
 	</head>
 	
 	<body>
+		<%@ include file="topnav.jsp" %>
+		
 		<div class="ctf_box">
 			<div class="header">
 				<div class="title">
@@ -136,8 +139,8 @@
 				<it:iterate list="<%= Dao.getComments(id) %>">
 					<% CommentBean comm = (CommentBean) pageContext.getAttribute("item"); %>
 					<div id="comm">
-					<%= comm.getUtente() %> · <%= comm.getTs() %>
-					<p style="padding-left: 5px; margin-bottom: 3px;overflow-wrap: break-word; max-width: 700px;"> <%= comm.getTesto() %></p>
+					<a class="userlink" href="Profile?username=<%=comm.getUtente()%>"><%= comm.getUtente() %></a> · <%= comm.getTs() %>
+					<p style="padding-left: 5px; margin-bottom: 3px;overflow-wrap: break-word; max-width: 700px;"><small> <%= comm.getTesto() %></small></p>
 					</div>
 				</it:iterate>
 				
@@ -146,12 +149,3 @@
 		</div>
 	</body>
 </html>
-
-
-
-
-
-
-
-
-

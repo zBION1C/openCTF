@@ -53,6 +53,23 @@ public class Dao {
         addUser.close();
         connection.close();
     }
+    
+    public static String getUserDate(String username) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+        PreparedStatement getUser = connection.prepareStatement("SELECT Utente.data FROM Utente WHERE username = ?");
+    
+        getUser.setString(1, username);
+
+        ResultSet result = getUser.executeQuery();
+        result.next();
+
+        String date = result.getString(1);
+
+        getUser.close();
+        connection.close();
+        
+        return date;
+    }
 
     public static List<CtfBean> getCTF() throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
@@ -454,14 +471,4 @@ public class Dao {
     	connection.close();
     	
     }
-    
 }
-
-
-
-
-
-
-
-
-

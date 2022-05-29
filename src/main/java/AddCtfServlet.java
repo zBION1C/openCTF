@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 import java.sql.*;
 import user.UserBean;
-import hint.HintBean;
 import dao.Dao;
 import org.apache.commons.fileupload.*;
 
