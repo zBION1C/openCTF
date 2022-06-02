@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 		try {
 			if (Dao.validate(user, username, password)) {
 				session.setAttribute("currentUser", user);
-				response.sendRedirect("index.jsp");
+				response.sendRedirect("Home");
 
 			} else {
 				out.println("<p>Username or password not correct</p>");

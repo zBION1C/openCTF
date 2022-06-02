@@ -71,12 +71,22 @@ public class Dao {
         return date;
     }
 
-    public static List<CtfBean> getCTF() throws SQLException, ClassNotFoundException {
+    public static List<CtfBean> getCTF(String orderby, String filter) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
     	
-    	Statement statement = connection.createStatement();
-    	String getCTF = "SELECT * from CTF";
-    	ResultSet response = statement.executeQuery(getCTF);
+    	PreparedStatement getCtf;
+    	
+    	if (orderby == null) {
+    		orderby = "data";
+    	}
+    	
+    	if (filter == null) {
+    		getCtf = connection.prepareStatement("SELECT * FROM CTF ORDER BY " + orderby);
+    	} else {
+    		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE titolo REGEXP '^" + filter + "' OR utente REGEXP '^" + filter + "' ORDER BY " + orderby);
+    	}
+    	
+    	ResultSet response = getCtf.executeQuery();
     	
     	List<CtfBean> ctfs = new ArrayList<CtfBean>();
     	
@@ -94,7 +104,7 @@ public class Dao {
     		ctfs.add(ctf);
     	}
     	
-    	statement.close();
+    	getCtf.close();
     	connection.close();
     	
     	return ctfs;
@@ -419,6 +429,24 @@ public class Dao {
     	
     	return m;	
     }
+    
+    public static String getFirstBlood(Integer ctf) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	CallableStatement fst = connection.prepareCall("{? = call FirstResolver(?)}");
+    	
+    	fst.registerOutParameter(1, Types.VARCHAR);
+    	
+    	fst.setInt(2, ctf);
+    	fst.execute();
+    	
+    	String u = fst.getString(1);
+    	
+    	fst.close();
+    	connection.close();
+    	
+    	return u;
+    }
+    
     
     public static int addCTF(String title, Integer diff, String descr, String flag, String user, String cat) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();

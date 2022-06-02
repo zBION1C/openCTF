@@ -9,6 +9,8 @@
 
 	<% 
 	UserBean user = (UserBean) session.getAttribute("currentUser");
+	String orderby = request.getParameter("orderby");
+	String filter = request.getParameter("search");
 	%>
 
 	<head>
@@ -21,20 +23,20 @@
 	</head>
 
 	<body>	
-		<div class=main>
-			<%@ include file="topnav.jsp" %>
-			
+		<%@ include file="topnav.jsp" %>
+		
+		<div class=main>	
 			<div class="ctf_list_box">
 				<table class="ctf_list">
 					<thead>
-						<th> Name </th>
-						<th> Author </th>
-						<th> Category </th>
-						<th> Difficulty </th>
-						<th> Date </th>
+						<th onclick="window.location='Home?orderby=titolo';"> Name </th>
+						<th onclick="window.location='Home?orderby=utente';"> Author </th>
+						<th onclick="window.location='Home?orderby=categoria';"> Category </th>
+						<th onclick="window.location='Home?orderby=difficolta';"> Difficulty </th>
+						<th onclick="window.location='Home?orderby=data';"> Date </th>
 					</thead>
-				
-				<it:iterate list="<%= Dao.getCTF() %>">
+
+				<it:iterate list="<%= Dao.getCTF(orderby, filter) %>">
 					<% CtfBean ctf = (CtfBean) pageContext.getAttribute("item"); %>
 					<tr style="text-align: center;" onclick="window.location='Challenge?id=<%=ctf.getId()%>';">
 						<td><%= ctf.getTitle() %></td>

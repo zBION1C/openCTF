@@ -26,9 +26,16 @@
 	padding: 10px;
 	line-height: 3px;
 }
-.points {
+.firstBlood {
 	padding: 10px;
 	margin-left: auto;
+	border-right: 1px solid #808080;
+}
+.firstBlood #fst {
+	color: #F01C1C;
+}
+.points {
+	padding: 10px;
 }
 .body {
 	display: flex;

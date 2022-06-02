@@ -21,7 +21,10 @@
 .ctf_list tr:hover {background-color: #191919; cursor: pointer;}
 
 .ctf_list th {
-  cursor: alias;
   background-color: #F01C1C;
   color: white;
+}
+
+.ctf_list th:hover {
+  background-color: #a40000;
 }

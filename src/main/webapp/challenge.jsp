@@ -55,6 +55,14 @@
 					<h3><%= ctf.getTitle() %></h3>
 					<p style="font-size:13px;">Author: <%=ctf.getCreator()%></p>
 				</div>
+				<div class="firstBlood">
+					<% 
+					String fst = Dao.getFirstBlood(id);
+					if (fst != null) {
+					%>
+					<p>First blood: <span id="fst"><%= fst %></span></p>
+					<% } %>
+				</div>
 				<div class="points">
 					<p><%= ctf.getDifficulty()*10 %> Points</p>
 				</div>

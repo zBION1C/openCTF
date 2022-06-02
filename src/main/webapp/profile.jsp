@@ -17,6 +17,10 @@
 		username = user.getUsername();
 		date = user.getDate();
 	}
+	
+	String[] dateonly = date.split(" ");
+	date = dateonly[0];
+	
 	%>
 
 	<head>
@@ -48,7 +52,7 @@
 			
 				<div class="misc">
 					<h3>Other Statistics</h3>
-					<p>Number of Attempted challenges: <%= Dao.getUserAttempts(username)%> </p>
+					<p>Number of attempted challenges: <%= Dao.getUserAttempts(username)%> </p>
 					<p>Number of resolved challenges: <%= Dao.getUserResolved(username) %></p>
 					<p>Number of <span class="highlight">"first bloods"</span> : <%= Dao.getFirstBloods(username) %></p>
 				</div>
