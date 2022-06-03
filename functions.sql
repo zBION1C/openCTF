@@ -8,6 +8,7 @@ DROP FUNCTION NumberAttempts;
 DROP FUNCTION UserAttemptedCtf;
 DROP FUNCTION NumberFirstResolver;
 DROP FUNCTION AlreadyResolved;
+DROP FUNCTION AlreadyAttempted;
 
 DELIMITER $$
 CREATE FUNCTION UserPoints(name VARCHAR(50))
@@ -15,11 +16,13 @@ RETURNS INTEGER DETERMINISTIC
 BEGIN
 	DECLARE points INTEGER;
 
-	SELECT sum(CTF.difficolta) INTO points 
+	SELECT sum(CTF.difficolta)*10 INTO points 
 	FROM Risolte, CTF
 	WHERE Risolte.utente = name AND
 		  Risolte.ctf = CTF.id;
-	
+
+	SET points = points + NumberFirstResolver(name) * 25;
+
 	IF ISNULL(points) THEN
 		RETURN 0;
 	ELSE
