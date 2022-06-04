@@ -8,6 +8,7 @@ import ctf.CtfBean;
 import hint.HintBean;
 import comment.CommentBean;
 import file.FileBean;
+import writeup.WriteupBean;
 
 public class Dao {
     public static Connection connect() throws SQLException, ClassNotFoundException {
@@ -71,7 +72,7 @@ public class Dao {
         return date;
     }
 
-    public static List<CtfBean> getCTF(String orderby, String filter) throws SQLException, ClassNotFoundException {
+    public static List<CtfBean> getCTF(String orderby, String search, String filterDif, String filterCat) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
     	
     	PreparedStatement getCtf;
@@ -80,10 +81,28 @@ public class Dao {
     		orderby = "data";
     	}
     	
-    	if (filter == null) {
-    		getCtf = connection.prepareStatement("SELECT * FROM CTF ORDER BY " + orderby);
+    	if (filterDif == null) {
+    		filterDif = "null";
+    	}
+    	
+    	if (filterCat == null) {
+    		filterCat = "null";
+    	}
+    	
+    	if (search != null) {
+    		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE titolo REGEXP '^" + search + "' OR utente REGEXP '^" + search + "'");
+    	} else if (!filterDif.equals("null") && !filterCat.equals("null")) {
+    		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE difficolta = ? AND categoria = ?");
+    		getCtf.setString(1, filterDif);
+    		getCtf.setString(2, filterCat);
+    	} else if (!filterDif.equals("null")) {
+    		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE difficolta = ?");
+    		getCtf.setString(1, filterDif);
+    	} else if (!filterCat.equals("null")) {
+    		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE categoria = ?");
+    		getCtf.setString(1, filterCat);
     	} else {
-    		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE titolo REGEXP '^" + filter + "' OR utente REGEXP '^" + filter + "' ORDER BY " + orderby);
+    		getCtf = connection.prepareStatement("SELECT * FROM CTF ORDER BY " + orderby);
     	}
     	
     	ResultSet response = getCtf.executeQuery();
@@ -224,6 +243,32 @@ public class Dao {
     	connection.close();
     	
     	return files;
+    }
+    
+    public static List<WriteupBean> getWriteups(Integer id) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement getW = connection.prepareStatement("SELECT * FROM Writeup WHERE ctf = ?");
+    	
+    	getW.setInt(1, id);
+    	
+    	ResultSet response = getW.executeQuery();
+    	
+    	List<WriteupBean> ws = new ArrayList<WriteupBean>();
+    	
+    	while (response.next()) {
+    		WriteupBean w = new WriteupBean();
+    		w.setName(response.getString(1));
+    		w.setUser(response.getString(2));
+    		w.setCtf(response.getInt(3));
+    		w.setTs(response.getString(4));
+    		
+    		ws.add(w);
+    	}
+    	
+    	getW.close();
+    	connection.close();
+    	
+    	return ws;
     }
     
     public static void putComment(String testo, String utente, Integer id) throws SQLException, ClassNotFoundException {

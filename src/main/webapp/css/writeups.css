@@ -1,0 +1,23 @@
+.ws_box {
+	display:flex;
+	position: relative;
+	margin: auto;
+	width: 60%;
+}
+
+.ws_list {
+	width: 100%;
+}
+
+.ws_list td, .ws_list th {
+	padding: 16px;
+}
+
+.ws_list tr:nth-child(even){background-color: #252525;}
+
+.ws_list tr:hover {background-color: #191919; cursor: pointer;}
+
+.ws_list th {
+  background-color: #F01C1C;
+  color: white;
+}

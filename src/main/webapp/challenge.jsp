@@ -117,7 +117,7 @@
 				int m = Dao.getAttempts(id);	
 				%>
 				
-				<%=n%> solves / <%=m%> attempts (<%= m!=0 ?(float) n / m : 0%>%)
+				<%=n%> solves / <%=m%> attempts (<%= m!=0 ?(float) (n / m) * 100 : 0%>%)
 			</div>
 					
 			<% if (user == null) { %>
@@ -131,7 +131,7 @@
 					</form>
 				</div>
 			<% } else { %>
-				<h5>You have completed this challenge!</h5>
+				<h5>You have completed this challenge!<br>Click <a href="AddWriteup?id=<%= id %>">here</a> to add your writeup.<br>Click <a href="Writeups?id=<%= id %>">here</a> to see the writeups.</h5>
 			<% } %>
 			<hr>
 			

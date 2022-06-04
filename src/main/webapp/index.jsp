@@ -10,7 +10,9 @@
 	<% 
 	UserBean user = (UserBean) session.getAttribute("currentUser");
 	String orderby = request.getParameter("orderby");
-	String filter = request.getParameter("search");
+	String search = request.getParameter("search");
+	String filterDif = request.getParameter("dif");
+	String filterCat = request.getParameter("cat");
 	%>
 
 	<head>
@@ -24,7 +26,6 @@
 
 	<body>	
 		<%@ include file="topnav.jsp" %>
-		
 		<div class=main>	
 			<div class="ctf_list_box">
 				<table class="ctf_list">
@@ -36,7 +37,7 @@
 						<th onclick="window.location='Home?orderby=data';"> Date </th>
 					</thead>
 
-				<it:iterate list="<%= Dao.getCTF(orderby, filter) %>">
+				<it:iterate list="<%= Dao.getCTF(orderby, search, filterDif, filterCat) %>">
 					<% CtfBean ctf = (CtfBean) pageContext.getAttribute("item"); %>
 					<tr style="text-align: center;" onclick="window.location='Challenge?id=<%=ctf.getId()%>';">
 						<td><%= ctf.getTitle() %></td>
@@ -46,11 +47,60 @@
 						<td><%= ctf.getDate() %></td>
 					</tr>
 				</it:iterate>
-				
 				</table>	
+				<button id="filterBtn" style="height: 30px; width: 30px;"></button>
 			</div>
 		</div>
-
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<h3 style="margin-top: 9px;">Filter by</h3>
+				<form action="Home" method="get">
+					<p>Difficulty: <select name="dif">
+						<option value="null">Choose your difficulty</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select></p>
+					<p>Category: <select name="cat">
+						<option value="null">Choose your category</option>
+						<option value="Reverse Engineering">Reverse Engineering</option>
+						<option value="Binary Exploitation">Binary Exploitation</option>
+						<option value="Forensic">Forensic</option>
+						<option value="Web Exploitation">Web Exploitation</option>
+					</select></p>
+				<button type="submit">Submit</button>
+				</form>
+			</div>
+		</div>
+		<script>
+			var modal = document.getElementById("myModal");
+			
+			var btn = document.getElementById("filterBtn");
+			
+			var span = document.getElementsByClassName("close")[0];
+			
+			btn.onclick = function() {
+			  modal.style.display = "block";
+			}
+			
+			span.onclick = function() {
+			  modal.style.display = "none";
+			}
+			
+			window.onclick = function(event) {
+			  if (event.target == modal) {
+			    modal.style.display = "none";
+			  }
+			}
+		</script>
 	</body>
 
 </html>

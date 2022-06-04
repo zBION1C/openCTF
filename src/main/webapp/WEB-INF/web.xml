@@ -30,6 +30,11 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>Writeups</servlet-name>
+		<jsp-file>/writeups.jsp</jsp-file>
+	</servlet>
+	
+	<servlet>
     	<servlet-name>Profile</servlet-name>
     	<jsp-file>/profile.jsp</jsp-file>
 	</servlet>
@@ -39,6 +44,11 @@
 		<servlet-class>LoginServlet</servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name>AddWriteup</servlet-name>
+		<jsp-file>/addWriteup.jsp</jsp-file>
+	</servlet>
+	
 	<servlet>
 		<servlet-name>Addctf</servlet-name>
 		<jsp-file>/addCtf.jsp</jsp-file>
@@ -75,8 +85,18 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
+		<servlet-name>AddWriteup</servlet-name>
+		<url-pattern>/AddWriteup</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
 		<servlet-name>Challenge</servlet-name>
 		<url-pattern>/Challenge</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Writeups</servlet-name>
+		<url-pattern>/Writeups</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
