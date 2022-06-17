@@ -245,6 +245,28 @@ public class Dao {
     	return files;
     }
     
+    public static List<UserBean> getScoreboard() throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement getS = connection.prepareStatement("SELECT username, UserPoints(Utente.username) FROM Utente ORDER BY UserPoints(Utente.username) DESC");
+    	
+    	ResultSet response = getS.executeQuery();
+    	
+    	List<UserBean> sc = new ArrayList<UserBean>();
+    	
+    	while (response.next()) {
+    		UserBean u = new UserBean();
+    		u.setUsername(response.getString(1));
+    		u.setPoints(response.getInt(2));
+    		
+    		sc.add(u);
+    	}
+    	
+    	getS.close();
+    	connection.close();
+    	
+    	return sc;
+    }
+    
     public static List<WriteupBean> getWriteups(Integer id) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
     	PreparedStatement getW = connection.prepareStatement("SELECT * FROM Writeup WHERE ctf = ?");
@@ -269,6 +291,20 @@ public class Dao {
     	connection.close();
     	
     	return ws;
+    }
+    
+    public static void addWriteup(String name, String user, Integer id) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement addW = connection.prepareStatement("INSERT INTO Writeup (nome, utente, ctf, ts) VALUES (?, ?, ?, NOW())");
+    	
+    	addW.setString(1, name);
+    	addW.setString(2, user);
+    	addW.setInt(3, id);
+    	
+    	addW.executeUpdate();
+    	
+    	addW.close();
+    	connection.close();
     }
     
     public static void putComment(String testo, String utente, Integer id) throws SQLException, ClassNotFoundException {

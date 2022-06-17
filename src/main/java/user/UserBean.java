@@ -4,6 +4,7 @@ public class UserBean {
 	private String username;
 	private String password;
 	private String date;
+	private Integer points;
 
 	public UserBean() {}
 	
@@ -18,6 +19,10 @@ public class UserBean {
 	public void setDate(String x) {
 		date = x;
 	}
+	
+	public void setPoints(Integer x) {
+		points = x;
+	}
 
 	public String getUsername() {
 		return username;
@@ -29,6 +34,10 @@ public class UserBean {
 	
 	public String getDate() {
 		return date;
+	}
+	
+	public Integer getPoints() {
+		return points;
 	}
 	
 }

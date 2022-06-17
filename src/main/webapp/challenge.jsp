@@ -131,7 +131,7 @@
 					</form>
 				</div>
 			<% } else { %>
-				<h5>You have completed this challenge!<br>Click <a href="AddWriteup?id=<%= id %>">here</a> to add your writeup.<br>Click <a href="Writeups?id=<%= id %>">here</a> to see the writeups.</h5>
+				<h5>You have completed this challenge!<br>Click <a href="Addwriteup?id=<%= id %>">here</a> to add your writeup.<br>Click <a href="Writeups?id=<%= id %>">here</a> to see the writeups.</h5>
 			<% } %>
 			<hr>
 			

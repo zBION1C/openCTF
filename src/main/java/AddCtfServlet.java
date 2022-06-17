@@ -25,15 +25,12 @@ public class AddCtfServlet extends HttpServlet {
 		
 		if (user != null) {
 			
-		
-			
 			boolean isMultipart = FileUpload.isMultipartContent(request);
 			DiskFileUpload upload = new DiskFileUpload();
 			
 			upload.setSizeThreshold(5000);
 			upload.setSizeMax(500000);
 			
-	
 			try {
 				items= upload.parseRequest(request);
 			} catch (FileUploadException e1) {

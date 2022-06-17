@@ -1,0 +1,23 @@
+.sc_box {
+	display:flex;
+	position: relative;
+	margin: auto;
+	width: 60%;
+}
+
+.sc_list {
+	width: 100%;
+}
+
+.sc_list td, .sc_list th {
+	padding: 16px;
+}
+
+.sc_list tr:nth-child(even){background-color: #252525;}
+
+.sc_list tr:hover {background-color: #191919; cursor: pointer;}
+
+.sc_list th {
+  background-color: #F01C1C;
+  color: white;
+}

@@ -43,15 +43,25 @@
 		<servlet-name>Login</servlet-name>
 		<servlet-class>LoginServlet</servlet-class>
 	</servlet>
-
+	
 	<servlet>
 		<servlet-name>AddWriteup</servlet-name>
+		<servlet-class>AddWriteupServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Addwriteup</servlet-name>
 		<jsp-file>/addWriteup.jsp</jsp-file>
 	</servlet>
 	
 	<servlet>
 		<servlet-name>Addctf</servlet-name>
 		<jsp-file>/addCtf.jsp</jsp-file>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>Scoreboard</servlet-name>
+		<jsp-file>/scoreboard.jsp</jsp-file>
 	</servlet>
 	
 	<servlet-mapping>
@@ -85,6 +95,11 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
+		<servlet-name>Addwriteup</servlet-name>
+		<url-pattern>/Addwriteup</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
 		<servlet-name>AddWriteup</servlet-name>
 		<url-pattern>/AddWriteup</url-pattern>
 	</servlet-mapping>
@@ -102,6 +117,11 @@
 	<servlet-mapping>
 		<servlet-name>Profile</servlet-name>
 		<url-pattern>/Profile</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>Scoreboard</servlet-name>
+		<url-pattern>/Scoreboard</url-pattern>
 	</servlet-mapping>
 
 </web-app>

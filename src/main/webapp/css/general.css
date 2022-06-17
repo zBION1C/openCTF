@@ -27,3 +27,7 @@ button:active {
 button[disabled]{
 	background-color: #470303;
 }
+
+a {
+	color: #F01C1C;
+}
