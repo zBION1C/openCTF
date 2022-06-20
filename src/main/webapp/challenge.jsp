@@ -12,10 +12,15 @@
 	CtfBean ctf = Dao.getCtfById(id); 
 	
 	UserBean user = (UserBean) session.getAttribute("currentUser");
+	
 	Boolean alreadyCompleted = false;
 	Boolean resolved = false;
+	Boolean isAdmin = false;
+	Boolean loggedin = false;
 	
 	if (user != null) {	
+		isAdmin = user.getAdmin();
+		loggedin = true;
 		
 		String flag = (String) request.getParameter("flag");
 		if (flag != null) {
@@ -53,7 +58,7 @@
 			<div class="header">
 				<div class="title">
 					<h3><%= ctf.getTitle() %></h3>
-					<p style="font-size:13px;">Author: <%=ctf.getCreator()%></p>
+					<p style="font-size:13px;">Author: <a href="Profile?username=<%=ctf.getCreator()%>"><%=ctf.getCreator()%></a></p>
 				</div>
 				<div class="firstBlood">
 					<% 
@@ -120,7 +125,7 @@
 				<%=n%> solves / <%=m%> attempts (<%= m!=0 ?(float) (n / m) * 100 : 0%>%)
 			</div>
 					
-			<% if (user == null) { %>
+			<% if (!loggedin) { %>
 				<h5>You have to be <a href="login.html">logged</a> in to submit the flag.</h5>
 			<% } else if (!alreadyCompleted) { %>
 				<div class="flag">
@@ -134,6 +139,11 @@
 				<h5>You have completed this challenge!<br>Click <a href="Addwriteup?id=<%= id %>">here</a> to add your writeup.<br>Click <a href="Writeups?id=<%= id %>">here</a> to see the writeups.</h5>
 			<% } %>
 			<hr>
+			
+			<% if (isAdmin) { %>
+				<a href="Management?mng=1&id=<%=id %>">REMOVE CHALLENGE</a>
+				<hr>
+			<% } %>
 			
 			<div class="comments">
 				<h4>Comments</h4>

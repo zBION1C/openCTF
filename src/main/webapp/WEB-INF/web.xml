@@ -30,6 +30,11 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>Management</servlet-name>
+		<servlet-class>ManagementServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>Writeups</servlet-name>
 		<jsp-file>/writeups.jsp</jsp-file>
 	</servlet>
@@ -63,6 +68,11 @@
 		<servlet-name>Scoreboard</servlet-name>
 		<jsp-file>/scoreboard.jsp</jsp-file>
 	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>Management</servlet-name>
+		<url-pattern>/Management</url-pattern>
+	</servlet-mapping>
 	
 	<servlet-mapping>
 		<servlet-name>Home</servlet-name>

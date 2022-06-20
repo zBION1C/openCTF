@@ -5,6 +5,7 @@ public class UserBean {
 	private String password;
 	private String date;
 	private Integer points;
+	private Boolean admin;
 
 	public UserBean() {}
 	
@@ -23,6 +24,10 @@ public class UserBean {
 	public void setPoints(Integer x) {
 		points = x;
 	}
+	
+	public void setAdmin(Boolean x) {
+		admin = x;
+	}
 
 	public String getUsername() {
 		return username;
@@ -40,4 +45,7 @@ public class UserBean {
 		return points;
 	}
 	
+	public Boolean getAdmin() {
+		return admin;
+	}
 }

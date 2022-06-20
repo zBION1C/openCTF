@@ -55,10 +55,12 @@
 					<p>Number of attempted challenges: <%= Dao.getUserAttempts(username)%> </p>
 					<p>Number of resolved challenges: <%= Dao.getUserResolved(username) %></p>
 					<p>Number of <span class="highlight">"first bloods"</span> : <%= Dao.getFirstBloods(username) %></p>
-				</div>
-			
+				</div>	
 			</div>
-		
+			<% if (user.getAdmin()) {%>
+				<hr>
+				<a href="Management?mng=3&username=<%= username %>">BAN USER</a>
+			<% } %>
 		</div>
 	</body>
 

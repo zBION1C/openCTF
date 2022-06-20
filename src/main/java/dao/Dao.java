@@ -13,7 +13,7 @@ import writeup.WriteupBean;
 public class Dao {
     public static Connection connect() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/openCTF", "nicholas", "Nicholas_Montana8");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/openCTF", "user", "");
         return connection;
     }
 
@@ -21,7 +21,7 @@ public class Dao {
     	Connection connection = Dao.connect();
     	
     	Boolean state = false;
-        PreparedStatement getUser = connection.prepareStatement("SELECT * FROM Utente WHERE username = ? AND password = ?");
+        PreparedStatement getUser = connection.prepareStatement("SELECT * FROM Utente WHERE username = ? AND password = ? AND banned = false");
     
         getUser.setString(1, username);
         getUser.setString(2, password);
@@ -32,7 +32,8 @@ public class Dao {
         if (state) {
             user.setUsername(result.getString(1));
             user.setPassword(result.getString(2));
-            user.setDate(result.getString(3));
+            user.setAdmin(result.getBoolean(3));
+            user.setDate(result.getString(5));
         }
 
         getUser.close();
@@ -40,14 +41,28 @@ public class Dao {
 
         return state;
     }
+    
+    public static void ban(String username) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement rem = connection.prepareStatement("UPDATE Utente SET username = ?, banned = true WHERE username=? AND banned = false;");
+    	
+    	rem.setString(1, username+" (Banned)");
+    	rem.setString(2, username);
+    	
+    	rem.executeUpdate();
+    	rem.close();
+    	connection.close();
+    }
 
     public static void register(String username, String password) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
     	
-    	PreparedStatement addUser = connection.prepareStatement("INSERT INTO Utente (username, password, data) VALUES (?, ?, NOW())");
+    	PreparedStatement addUser = connection.prepareStatement("INSERT INTO Utente (username, password, admin, banned, data) VALUES (?, ?, ?, ?, NOW())");
 
         addUser.setString(1, username);
         addUser.setString(2, password);
+        addUser.setBoolean(3, false);
+        addUser.setBoolean(4, false);
         
         addUser.executeUpdate();
 
@@ -307,6 +322,19 @@ public class Dao {
     	connection.close();
     }
     
+    public static void removeWriteup(Integer ctf, String username) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement rem = connection.prepareStatement("DELETE FROM Writeup WHERE ctf=? AND utente=? ;");
+    	
+    	rem.setInt(1, ctf);
+    	rem.setString(2, username);
+    	
+    	rem.executeUpdate();
+    	rem.close();
+    	connection.close();
+    }
+    
+    
     public static void putComment(String testo, String utente, Integer id) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
     	PreparedStatement put = connection.prepareStatement("INSERT INTO Commenti (ts, testo, utente, ctf) VALUES (NOW(), ?, ?, ?)");
@@ -552,6 +580,17 @@ public class Dao {
     	connection.close();
     	
     	return id;
+    }
+    
+    public static void removeCTF(Integer id) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement rem = connection.prepareStatement("DELETE FROM CTF WHERE id=?;");
+    	
+    	rem.setInt(1, id);
+    	
+    	rem.executeUpdate();
+    	rem.close();
+    	connection.close();
     }
     
     public static void addFile(String nome, Integer ctf) throws SQLException, ClassNotFoundException {

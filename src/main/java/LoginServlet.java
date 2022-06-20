@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 				response.sendRedirect("Home");
 
 			} else {
-				out.println("<p>Username or password not correct</p>");
+				out.println("<p>Username or password not correct or you have been banned.</p>");
 			}
 		} catch ( SQLException e ) {
             out.println("An error has occured. Please try again.");

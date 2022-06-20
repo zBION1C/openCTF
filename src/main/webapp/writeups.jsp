@@ -10,6 +10,7 @@
 	<%
 	Integer id = Integer.parseInt(request.getParameter("id"));
 	UserBean user = (UserBean) session.getAttribute("currentUser");
+	Boolean isAdmin = user.getAdmin();
 	%>
 	
 	<head>
@@ -28,6 +29,9 @@
 					<th> Name </th>
 					<th> Author </th>
 					<th> Date </th>
+					<% if (isAdmin) { %>
+						<th>Manage Writeups</th>
+					<% } %>
 				</thead>
 	
 				<it:iterate list="<%= Dao.getWriteups(id) %>">
@@ -39,6 +43,9 @@
 						<td><a href=<%=path %>> <%= w.getName() %> </a></td>
 						<td><%= w.getUser() %></td>
 						<td><%= w.getTs() %></td>
+						<% if (isAdmin) { %>
+							<td><a href="Management?mng=2&id=<%= id %>&username=<%= w.getUser() %>">REMOVE</a></td>
+						<% } %>
 					</tr>
 				</it:iterate>
 			</table>
