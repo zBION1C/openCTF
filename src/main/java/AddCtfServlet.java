@@ -20,9 +20,13 @@ public class AddCtfServlet extends HttpServlet {
 	
 	protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
 		
+		Boolean error = false;
+		
 		HttpSession session = request.getSession();
 		user = (UserBean) session.getAttribute("currentUser");
 		
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
 		if (user != null) {
 			
 			boolean isMultipart = FileUpload.isMultipartContent(request);
@@ -55,13 +59,32 @@ public class AddCtfServlet extends HttpServlet {
 						category = item.getString();
 					} else if (name.equals("hints")) {
 						try {
-							id = Dao.addCTF(title, difficulty, description, flag, user.getUsername(), category);
-							hints = item.getString();
-							if (!hints.equals("")) {
-								String[] hintslist = hints.split("#");
-								for (String s : hintslist) {
-									Dao.addHint(s, id);
+							if (title.length() > 3 && description.length() > 19 && flag.length() > 19) {
+								id = Dao.addCTF(title, difficulty, description, flag, user.getUsername(), category);
+								hints = item.getString();
+								if (!hints.equals("")) {
+									String[] hintslist = hints.split("#");
+									for (String s : hintslist) {
+										Dao.addHint(s, id);
+									}
 								}
+							} else {
+								error = true;
+								out.println("<?xml version = \"1.0\"?>");
+
+								out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD " +
+											"XHTML 1.0 Strict//EN\" \"http://www.w3.org" +
+											"/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+								out.println("<html xmlns = \"http://www.w3.org/1999/xhtml\">");
+
+								out.println("<head>");
+								out.println("<link rel=\"stylesheet\" href=\"css/general.css\">");
+								out.println("<title>Error</title>");
+								out.println("</head>");
+
+								out.println("<body>");
+								out.println("<h5>Check if the fields of the form satisfies the requirements.</h5>");
+								out.println("</body>");
 							}
 						} catch (ClassNotFoundException | SQLException e) {
 							e.printStackTrace();
@@ -80,11 +103,10 @@ public class AddCtfServlet extends HttpServlet {
 					}
 				}
 			}	
-			
-			response.sendRedirect("index.jsp");
+			if (!error) {
+				response.sendRedirect("index.jsp");
+			}
 		} else {
-			response.setContentType("text/html");
-			PrintWriter out = response.getWriter();
 			
 			out.println("<?xml version = \"1.0\"?>");
 

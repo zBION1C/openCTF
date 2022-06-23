@@ -33,7 +33,7 @@ public class ManagementServlet extends HttpServlet {
 					response.sendRedirect("Writeups?id="+id);
 				} else if (mng == 3) {
 					Dao.ban(username);
-					response.sendRedirect("Profile?username="+username+" (Banned)");
+					response.sendRedirect("Profile?username="+username);
 				}
 			}
 		} catch (ClassNotFoundException | SQLException e) {

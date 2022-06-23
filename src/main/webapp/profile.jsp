@@ -7,19 +7,16 @@
 
 	<% 
 	UserBean user = (UserBean) session.getAttribute("currentUser");
-	String username = (String) request.getParameter("username");
-	String date;
-	
-	if (username != null) {
-		date = Dao.getUserDate(username);
-	}
-	else {
-		username = user.getUsername();
-		date = user.getDate();
+	Boolean isAdmin = false;
+	if (user != null) {
+		isAdmin = user.getAdmin();
 	}
 	
-	String[] dateonly = date.split(" ");
-	date = dateonly[0];
+	UserBean v_user = Dao.getUser(request.getParameter("username"));
+	String v_username = v_user.getUsername();
+	
+	String[] dateonly = v_user.getDate().split(" ");
+	String date = dateonly[0];
 	
 	%>
 
@@ -36,30 +33,30 @@
 		
 		<div class="main">
 			<div class="header">
-				<h3><%= username %></h3>
+				<h3><%= v_username %></h3>
 				<p style="font-size:13px;">signed in: <%= date %></p>
 			</div>
 			<hr>
 			<div class="stats">
 				<div class="points">
 					<h3>Statistics</h3>
-					<p>Binary Exploitation : <%= Dao.getUserResolvedCat(username, "Binary Exploitation") %></p>
-					<p>Reverse Engineering : <%= Dao.getUserResolvedCat(username, "Reverse Engineering") %></p>
-					<p>Web Exploitation : <%= Dao.getUserResolvedCat(username, "Web Exploitation") %></p>
-					<p>Forensic : <%= Dao.getUserResolvedCat(username, "Forensic") %></p>
-					<p><b>Total points : <%= Dao.getUserPoints(username) %></b></p>
+					<p>Binary Exploitation : <%= Dao.getUserResolvedCat(v_username, "Binary Exploitation") %></p>
+					<p>Reverse Engineering : <%= Dao.getUserResolvedCat(v_username, "Reverse Engineering") %></p>
+					<p>Web Exploitation : <%= Dao.getUserResolvedCat(v_username, "Web Exploitation") %></p>
+					<p>Forensic : <%= Dao.getUserResolvedCat(v_username, "Forensic") %></p>
+					<p><b>Total points : <%= Dao.getUserPoints(v_username) %></b></p>
 				</div>
 			
 				<div class="misc">
 					<h3>Other Statistics</h3>
-					<p>Number of attempted challenges: <%= Dao.getUserAttempts(username)%> </p>
-					<p>Number of resolved challenges: <%= Dao.getUserResolved(username) %></p>
-					<p>Number of <span class="highlight">"first bloods"</span> : <%= Dao.getFirstBloods(username) %></p>
+					<p>Number of attempted challenges: <%= Dao.getUserAttempts(v_username)%> </p>
+					<p>Number of resolved challenges: <%= Dao.getUserResolved(v_username) %></p>
+					<p>Number of <span class="highlight">"first bloods"</span> : <%= Dao.getFirstBloods(v_username) %></p>
 				</div>	
 			</div>
-			<% if (user.getAdmin()) {%>
+			<% if (isAdmin && !user.getUsername().equals(v_username) && !v_user.getBanned()) {%>
 				<hr>
-				<a href="Management?mng=3&username=<%= username %>">BAN USER</a>
+				<a href="Management?mng=3&username=<%= v_username %>">BAN USER</a>
 			<% } %>
 		</div>
 	</body>

@@ -24,10 +24,10 @@
   background-color: #F01C1C;
   color: white;
 }
-
 .ctf_list th:hover {
   background-color: #a40000;
 }
+
 .modal {
   display: none;
   position: fixed;

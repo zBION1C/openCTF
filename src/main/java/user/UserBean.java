@@ -6,6 +6,7 @@ public class UserBean {
 	private String date;
 	private Integer points;
 	private Boolean admin;
+	private Boolean banned;
 
 	public UserBean() {}
 	
@@ -29,6 +30,10 @@ public class UserBean {
 		admin = x;
 	}
 
+	public void setBanned(Boolean x) {
+		banned = x;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
@@ -47,5 +52,9 @@ public class UserBean {
 	
 	public Boolean getAdmin() {
 		return admin;
+	}
+	
+	public Boolean getBanned() {
+		return banned;
 	}
 }

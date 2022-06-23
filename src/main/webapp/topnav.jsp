@@ -2,7 +2,7 @@
 <div class="topnav">
 	<a class="active" href="index.jsp">Home</a>
 	<% if (user != null) { %>
-	<a href="Profile">Profile</a>
+	<a href="Profile?username=<%=user.getUsername()%>">Profile</a>
 	<a href="Addctf">Add CTF</a>
 	<a href="Scoreboard">Scoreboard</a>
 	<a href="Logout">Logout</a>

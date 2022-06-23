@@ -25,7 +25,7 @@
 			<h3>Submit your own CTF!</h3>
 			<hr>
 			<form action="/openCTF/AddCtf" method="post" enctype="multipart/form-data">
-				<p>Title: <input type="text" name="title" placeholder="Title of your CTF"></p>
+				<p>Title: <input type="text" name="title" placeholder="Title of your CTF (at least 4 chars)"></p>
 				<p>Difficulty: <select name="difficulty">
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -38,8 +38,8 @@
 					<option value="9">9</option>
 					<option value="10">10</option>
 				</select></p>
-				<p>Description: <textarea name="description" placeholder="Description..."></textarea></p>
-				<p>Flag: <input type="text" name="flag" placeholder="Flag of your CTF"></p>
+				<p>Description: <textarea name="description" placeholder="Description of your CTF (at least 20 chars)"></textarea></p>
+				<p>Flag: <input type="text" name="flag" placeholder="Flag of your CTF (at least 20 chars)"></p>
 				<p>Category: <select name="category">
 					<option value="Reverse Engineering">Reverse Engineering</option>
 					<option value="Binary Exploitation">Binary Exploitation</option>

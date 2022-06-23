@@ -11,6 +11,11 @@
 	UserBean user = (UserBean) session.getAttribute("currentUser");
 	String orderby = request.getParameter("orderby");
 	String search = request.getParameter("search");
+	Boolean searchedUsers = false;
+	if (search != null && search.split(":", 2)[0].equals("user")) {
+		searchedUsers = true;
+		search = search.split(":", 2)[1];
+	}
 	String filterDif = request.getParameter("dif");
 	String filterCat = request.getParameter("cat");
 	%>
@@ -24,10 +29,12 @@
 		<title>Home</title>
 	</head>
 
-	<body>	
+	<body>
 		<%@ include file="topnav.jsp" %>
+		
 		<div class=main>	
 			<div class="ctf_list_box">
+				<%if (!searchedUsers) { %>
 				<table class="ctf_list">
 					<thead>
 						<th onclick="window.location='Home?orderby=titolo';"> Name </th>
@@ -48,7 +55,21 @@
 					</tr>
 				</it:iterate>
 				</table>	
-				<button id="filterBtn" style="height: 30px; width: 30px;"></button>
+				<button id="filterBtn" style="font-size:20px; padding:0px; height: 40px; width: 40px;"><i class="fa fa-filter"></i></button>
+				<% } else { %>
+				<table class="ctf_list">
+					<thead>
+						<th> Name </th>
+					</thead>
+
+				<it:iterate list="<%= Dao.getUsers(search) %>">
+					<% UserBean u = (UserBean) pageContext.getAttribute("item"); %>
+					<tr style="text-align: center;">
+						<td><a href="Profile?username=<%=u.getUsername()%>"><%= u.getUsername() %></a></td>
+					</tr>
+				</it:iterate>
+				</table>
+				<% } %>
 			</div>
 		</div>
 		<div id="myModal" class="modal">

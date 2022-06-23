@@ -69,23 +69,6 @@ public class Dao {
         addUser.close();
         connection.close();
     }
-    
-    public static String getUserDate(String username) throws SQLException, ClassNotFoundException {
-    	Connection connection = Dao.connect();
-        PreparedStatement getUser = connection.prepareStatement("SELECT Utente.data FROM Utente WHERE username = ?");
-    
-        getUser.setString(1, username);
-
-        ResultSet result = getUser.executeQuery();
-        result.next();
-
-        String date = result.getString(1);
-
-        getUser.close();
-        connection.close();
-        
-        return date;
-    }
 
     public static List<CtfBean> getCTF(String orderby, String search, String filterDif, String filterCat) throws SQLException, ClassNotFoundException {
     	Connection connection = Dao.connect();
@@ -105,7 +88,9 @@ public class Dao {
     	}
     	
     	if (search != null) {
-    		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE titolo REGEXP '^" + search + "' OR utente REGEXP '^" + search + "'");
+    		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE titolo LIKE ? OR utente LIKE ?");
+    		getCtf.setString(1, search + "%");
+    		getCtf.setString(2, search + "%");
     	} else if (!filterDif.equals("null") && !filterCat.equals("null")) {
     		getCtf = connection.prepareStatement("SELECT * FROM CTF WHERE difficolta = ? AND categoria = ?");
     		getCtf.setString(1, filterDif);
@@ -142,6 +127,29 @@ public class Dao {
     	connection.close();
     	
     	return ctfs;
+    }
+    
+    public static UserBean getUser(String name) throws SQLException, ClassNotFoundException { 
+    	Connection connection = Dao.connect();
+    	PreparedStatement getU = connection.prepareStatement("SELECT username, data, admin, banned FROM Utente WHERE username = ?");
+    	
+    	getU.setString(1, name);
+    	
+    	ResultSet response = getU.executeQuery();
+    	
+    	UserBean user = new UserBean();
+    	
+    	while (response.next()){
+    		user.setUsername(response.getString(1));
+    		user.setDate(response.getString(2));
+    		user.setAdmin(response.getBoolean(3));
+    		user.setBanned(response.getBoolean(4));
+    	}
+    	
+    	getU.close();
+    	connection.close();
+    	
+    	return user;
     }
     
     public static CtfBean getCtfById(Integer id) throws SQLException, ClassNotFoundException {
@@ -258,6 +266,29 @@ public class Dao {
     	connection.close();
     	
     	return files;
+    }
+    
+    public static List<UserBean> getUsers(String name) throws SQLException, ClassNotFoundException {
+    	Connection connection = Dao.connect();
+    	PreparedStatement getS = connection.prepareStatement("SELECT username FROM Utente WHERE username LIKE ?");
+    	
+    	getS.setString(1, name + "%");
+    	
+    	ResultSet response = getS.executeQuery();
+    	
+    	List<UserBean> sc = new ArrayList<UserBean>();
+    	
+    	while (response.next()) {
+    		UserBean u = new UserBean();
+    		u.setUsername(response.getString(1));
+    		
+    		sc.add(u);
+    	}
+    	
+    	getS.close();
+    	connection.close();
+    	
+    	return sc;
     }
     
     public static List<UserBean> getScoreboard() throws SQLException, ClassNotFoundException {
