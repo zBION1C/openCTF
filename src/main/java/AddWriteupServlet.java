@@ -39,6 +39,7 @@ public class AddWriteupServlet extends HttpServlet {
 				FileItem item = (FileItem) itr.next();
 				try {
 					upload.setRepositoryPath(getServletContext().getRealPath("/")+"challenge/" + id + "/writeups");
+					new File(getServletContext().getRealPath("/")+ "challenge/" + id).mkdir();
 					new File(getServletContext().getRealPath("/")+ "challenge/" + id + "/writeups").mkdir();
 					File fullFile = new File(item.getName());
 					File SavedFile = new File(getServletContext().getRealPath("/")+ "challenge/" + id + "/writeups/" + fullFile.getName());
